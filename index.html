@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+	Simple Attendance System by Victor
+	github.com/lin-ycv/AttendanceSystem | @lin-ycv
+	Free for personal and commercial use under the MIT license
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Yu Chieh (Victor) Lin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簽到系統 - Attendance</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            transition: background-color 0.5s ease;
+            /* Smooth background color transition */
+        }
+
+        #ipContainer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        #submissionContainer {
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .green-background {
+            background-color: lightgreen;
+        }
+
+        .subtle-text {
+            color: #6b6b6b;
+            /* Subtle grey color */
+        }
+    </style>
+    <script>
+        let ipAddress = '';
+
+        function getIP(json) {
+            ipAddress = json.ip;
+            document.getElementById("ipAddress").textContent = ipAddress;
+
+            const submitButton = document.getElementById("submitButton");
+            submitButton.removeAttribute("disabled");
+
+            // Enable background color change only after IP is fetched
+            document.body.classList.add("ip-fetched");
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const idValue = document.getElementById("idField").value;
+
+            if (/^[A-Za-z0-9]+$/.test(idValue)) {
+                //disable the submit button
+                document.getElementById("submitButton").disabled = true;
+                const submissionTime = new Date().toLocaleString();
+
+                document.getElementById("idField").style.display = "none";
+                document.getElementById("submitButton").style.display = "none";
+
+                const submissionInfo = document.createElement("div");
+                submissionInfo.innerHTML = idValue + "<br><span class='subtle-text'>" + submissionTime + "</span>";
+                submissionInfo.id = "submissionInfo";
+
+                const submissionContainer = document.getElementById("submissionContainer");
+                submissionContainer.innerHTML = `
+                    <div>
+                        ${idValue}<br>
+                        <span class='subtle-text'>${submissionTime}</span>
+                    </div>
+                `;
+
+                // Change background color to light green
+                document.body.classList.add("green-background");
+
+                // Send POST request to a placeholder URL without handling response
+                const postData = {
+                    id: idValue,
+                    ip: ipAddress
+                };
+                const postUrl = "https://script.google.com/macros/s/web-app-ID/exec"; // Placeholder, replace with your own
+                fetch(postUrl, {
+                    method: "POST",
+                    body: JSON.stringify(postData)
+                });
+            } else {
+                alert("請輸入ID - Please enter your ID");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div id="ipContainer">
+            <h1 id="ipAddress">Fetching IP address...</h1>
+        </div>
+        <div id="submissionContainer">
+            <form onsubmit="handleSubmit(event)">
+                <input type="text" id="idField" placeholder="ID">
+                <button id="submitButton" disabled>Submit</button>
+            </form>
+        </div>
+        <script src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+    </div>
+</body>
+
+</html>
