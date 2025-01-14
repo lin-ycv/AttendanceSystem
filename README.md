@@ -11,13 +11,13 @@ A super simple automated attendance system using HTML form and Google Apps Scrip
     * there's a 10 min delay to the compilation, counted from the last submission, so it only compiles once after everyone has submitted
 
 ## Setup
-1. Create a Google Spreadsheet and populate it to match [Spreadsheet.xls](GD\Spreadsheet.xls)
+1. Create a Google Spreadsheet and populate it to match [Spreadsheet.xls](GD/Spreadsheet.xls)
     * the sheet names have to match, including captitalization
 2. Edit the spreadsheet as needed (note: if you change the order of the columns, the Apps Script needs to be adjusted accordingly)
     * the number after IP Address is the day of the week of the course/event
-3. Create a Apps Script on that Spreadsheet, paste in [GS.js](GD\GS.js) and adjust accordingly
-    * on [line 66](GD\GS.js#L66), you can adjust the delay before compilation
-    * on [line 128](GD\GS.js#L128), set the IP address constraint (or remove if not needed)
+3. Create a Apps Script on that Spreadsheet, paste in [GS.js](GD/GS.js) and adjust accordingly
+    * on [line 66](GD/GS.js#L66), you can adjust the delay before compilation
+    * on [line 128](GD/GS.js#L128), set the IP address constraint (or remove if not needed)
 4. Deploy it to get the web-app URL and replace the placeholder in [index.html on line 96](index.html#L96)
 
 ----
